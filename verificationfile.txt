@@ -3,7 +3,7 @@
 #Journaliser l'exécution du fichier 
 #tester avec tail -f pour voir en temps réel les logs
 
-
+nano server2_conf.sh
 #!/bin/bash
 
 # on verifie si le bay est present
@@ -19,7 +19,9 @@ else
     sudo rm -r /home/ec2-user/tp-cohorte/
     echo "$(date) => Fichier server.conf telecharge"
 fi
+
 #Journaliser l'exécution du fichier
+crontab -e
 * * * * * /home/ec2-user/server2_conf.sh >> /home/ec2-user/server_conf_logs
 
 #tester avec tail -f pour voir en temps réel les logs
