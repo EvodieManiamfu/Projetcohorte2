@@ -1,0 +1,52 @@
+Comment créer un VPC AWS dans une région donnée avec quatre zones de disponibilité, chacune ayant deux sous-réseaux (un public et un privé), pour un total de 8 sous-réseaux ? L'adresse réseau est 10.10.0.0 et nous voulons avoir 14000 IPs disponibles. Pouvez-vous déterminer l'adresse du grand réseau ainsi que les adresses des 8 sous-réseaux ?
+voici la procedure:
+
+                                                  Calcul de l'Adresse Réseau et des Sous-Réseaux
+Adresse Réseau (CIDR Block) :
+
+Grand réseau : 10.10.0.0/18
+Cela donne un total de 16 384 adresses IP (2^(32-18)).
+Sous-Réseaux :
+
+Nous devons diviser l'espace d'adresses 10.10.0.0/18 en 8 sous-réseaux égaux.
+Chaque sous-réseau aura un bloc de 10.10.0.0/21 (chaque /21 donne 2048 adresses IP, ce qui est suffisant pour les besoins).
+Découpage en Sous-Réseaux
+Zone de Disponibilité A :
+Public : 10.10.0.0/21
+Privé : 10.10.8.0/21
+Zone de Disponibilité B :
+Public : 10.10.16.0/21
+Privé : 10.10.24.0/21
+Zone de Disponibilité C :
+Public : 10.10.32.0/21
+Privé : 10.10.40.0/21
+Zone de Disponibilité D :
+Public : 10.10.48.0/21
+Privé : 10.10.56.0/21
+Détails des Sous-Réseaux dans la partie console
+1. creation de VPC
+- mettre le nom de VPC qui est Tp1-creationVPC et IPv4 CIDR qui est 10.10.0.0/18 
+2. Creation des 8 sous réseaux
+
+Zone de Disponibilité A (us-east-1b) :
+
+Public : 10.10.0.0/21 
+Privé : 10.10.8.0/21 
+Zone de Disponibilité B (us-east-1c) :
+
+Public : 10.10.16.0/21 
+Privé : 10.10.24.0/21 
+Zone de Disponibilité C (us-east-1d) :
+
+Public : 10.10.32.0/21 
+Privé : 10.10.40.0/21 
+Zone de Disponibilité D (us-east-1e) :
+
+Public : 10.10.48.0/21 
+Privé : 10.10.56.0/21 (
+3. Creation de Route tables 
+Lorsqu on cree les sous réseaux AWS crée automatiquement une route table et nous avons ajouté manuellement une route table pour que les adresse IPS public ne puissent pas avoir la meme route table, voici la procedure:
+-on crée la route 
+-on associe notre route avec tous nos subnet privé
+4. creation de internet gateway
+on crée pour le subnet public seulment
