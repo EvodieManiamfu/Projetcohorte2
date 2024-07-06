@@ -1,0 +1,27 @@
+#Exercice 7: Crontab
+#Le script doit vérifier si le fichier server.conf existe, sinon le télécharger avec git
+#Journaliser l'exécution du fichier 
+#tester avec tail -f pour voir en temps réel les logs
+
+
+#!/bin/bash
+
+# on verifie si le bay est present
+if [ -f "/etc/server.conf" ];
+then
+    echo "$(date) => Fichier trouvé dans etc"
+else
+    #Telecharger le fichier depuis git
+    echo "$(date) => Lancement du telechargement"
+    git clone https://github.com/juniormeme/tp-cohorte.git
+    # On recupère ce qui est le plus interessant
+    sudo cp /home/ec2-user/tp-cohorte/server.conf /etc/server.conf
+    sudo rm -r /home/ec2-user/tp-cohorte/
+    echo "$(date) => Fichier server.conf telecharge"
+fi
+#Journaliser l'exécution du fichier
+* * * * * /home/ec2-user/server2_conf.sh >> /home/ec2-user/server_conf_logs
+
+#tester avec tail -f pour voir en temps réel les logs
+tail -n 1  -f server_conf_logs
+
